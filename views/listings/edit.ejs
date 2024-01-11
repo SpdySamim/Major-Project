@@ -1,0 +1,108 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+
+        <h1>Edit your listing</h1>
+        <form method="post" 
+            class="needs-validation" novalidate
+            action="/listings/<%= listing._id %>?_method=PUT"
+            enctype="multipart/form-data"
+        >
+            <!-- title -->
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input 
+                type="text" 
+                name="listings[title]" 
+                placeholder="Add a catchy title"
+                class="form-control"
+                value="<%= listing.title %>"
+                required
+                >
+                <div class="valid-feedback">Title Looks good!</div>
+                <div class="invalid-feedback">Please enter a title!</div>
+            </div>
+            <!-- description -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea 
+                name="listings[description]" 
+                class="form-control"
+                required><%= listing.description %></textarea>
+                <div class="invalid-feedback">Please write a short description!</div>
+
+
+            </div>
+            <!-- image-preview -->
+            <div class="mb-3 originalImg">
+                Original Image <br>
+                <img src="<%= originalImageUrl %>" alt="">
+            </div>
+            <!-- image -->
+            <div class="mb-3">
+                <label for="image" class="form-label" >Upload New Image</label>
+                <input 
+                type="file" 
+                name="listings[image]" 
+                class="form-control"
+                >
+            </div>
+            <div class="row">
+                <!-- price -->
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input 
+                    type="number" 
+                    name="listings[price]"
+                    placeholder="10000"
+                    class="form-control"
+                    value="<%= listing.price %>" required>
+                    <div class="invalid-feedback">Please enter price!</div>
+
+                </div>
+                <!-- country -->
+                <div class="mb-3 col-md-8">
+                    <label for="country" class="form-label">Country</label>
+                    <input 
+                    type="text" 
+                    name="listings[country]" 
+                    placeholder="India"
+                    class="form-control"
+                    value="<%= listing.country %>" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input 
+                type="text" 
+                name="listings[location]" 
+                placeholder="Kolkata"
+                class="form-control"
+                value="<%= listing.location %>" required>
+                <div class="invalid-feedback">Please enter a valid location!</div>
+
+            </div>
+            
+            <!-- <input type="text" name="title" placeholder="Enter title"> -->
+            <br>
+            <button class="btn btn-dark edit-btn">Save</button>
+            <br><br>
+    <!--         
+            <input type="text" name="listings[title]" ">
+            <br><br>
+            <textarea name="listings[description]"></textarea>
+            <br><br>
+            <input type="number" name="listings[price]" 
+            <br><br>
+            <input type="text" name="listings[image]" 
+            <br><br>
+            <input type="text" name="listings[location]">
+            <br><br>
+            <input type="text" name="listings[country]" >
+            <br><br>
+            <input type="text" name="title" placeholder="Enter title"> -->
+        </form>
+    </div>
+</div>
+<script src="/js/script.js"></script>
