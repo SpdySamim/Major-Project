@@ -8,6 +8,8 @@ const app=express();
 const port=7070;
 const path=require("path")
 //routes
+const listings = require("./routes/listing.js")
+const reviews = require("./routes/review.js")
 const userRouter=require("./routes/user.js")
 const {isLoggedIn, isOwner, isReviewAuthor}=require("./middleware.js")
 //controllers
@@ -101,70 +103,74 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //mw for flash
-app.use((req,res,next)=>{
-    res.locals.success= req.flash("success");
-    res.locals.error= req.flash("error");
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
     res.locals.currUser=req.user;
     next();
 });
+
 // app.use("/",userRouter)
+app.use("/listings", listings);
+app.use("/listings/:id/reviews", reviews);
+app.use("/",userRouter);
 
 //listing route
-app.get("/listings",wrapAsync(listingController.index));
+// app.get("/listings",wrapAsync(listingController.index));
 
 // new route
-app.get("/listings/new",isLoggedIn,listingController.renderNewForm);
+// app.get("/listings/new",isLoggedIn,listingController.renderNewForm);
 
 //show route
-app.get("/listings/:id",wrapAsync(listingController.showListing));
+// app.get("/listings/:id",wrapAsync(listingController.showListing));
 
 //create route
-const validateListing=(req,res,next)=>{
-    let{error}=listingSchema.validate(req.body);
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-};
+// const validateListing=(req,res,next)=>{
+//     let{error}=listingSchema.validate(req.body);
+//     if(error){
+//         let errMsg=error.details.map((el)=>el.message).join(",");
+//         throw new ExpressError(400,errMsg);
+//     }else{
+//         next();
+//     }
+// };
 //post req for new listing
 // app.post('/listings',  function (req, res, next) {
 //     res.send(req.file)
 //   })
-app.post(
-    "/listings",isLoggedIn,
-    upload.single('listings[image]'),
-    validateListing,
-    wrapAsync(listingController.createListing))
+// app.post(
+    // "/listings",isLoggedIn,
+    // upload.single('listings[image]'),
+    // validateListing,
+    // wrapAsync(listingController.createListing))
 
 //edit route
-app.get("/listings/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEditForm));
+// app.get("/listings/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEditForm));
 
 //update route
-app.put("/listings/:id",isLoggedIn,isOwner,upload.single('listings[image]'),validateListing,wrapAsync(listingController.updateListing));
+// app.put("/listings/:id",isLoggedIn,isOwner,upload.single('listings[image]'),validateListing,wrapAsync(listingController.updateListing));
 
 //delete route
-app.delete("/listings/:id/delete",isLoggedIn,isOwner,wrapAsync(listingController.deleteListing));
+// app.delete("/listings/:id/delete",isLoggedIn,isOwner,wrapAsync(listingController.deleteListing));
 //search
-app.get("/search",wrapAsync(listingController.searchResult));
+// app.get("/search",wrapAsync(listingController.searchResult));
 
 
 // problem....
 //reviews
-const validateReview=(req,res,next)=>{
-    let{error}=reviewSchema.validate(req.body);
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-};
-app.post("/listings/:id/reviews",isLoggedIn,validateReview,wrapAsync(reviewController.createReview))
-app.delete("/listings/:id/reviews/:reviewId",isLoggedIn,isReviewAuthor,wrapAsync(reviewController.deleteReview))
+// const validateReview=(req,res,next)=>{
+//     let{error}=reviewSchema.validate(req.body);
+//     if(error){
+//         let errMsg=error.details.map((el)=>el.message).join(",");
+//         throw new ExpressError(400,errMsg);
+//     }else{
+//         next();
+//     }
+// };
+// app.post("/listings/:id/reviews",isLoggedIn,validateReview,wrapAsync(reviewController.createReview))
+// app.delete("/listings/:id/reviews/:reviewId",isLoggedIn,isReviewAuthor,wrapAsync(reviewController.deleteReview))
 
-app.use("/",userRouter)
+// app.use("/",userRouter)
 
 //error handling
 
