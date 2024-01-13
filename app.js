@@ -107,7 +107,7 @@ app.use((req,res,next)=>{
     res.locals.currUser=req.user;
     next();
 });
-app.use("/",userRouter)
+// app.use("/",userRouter)
 
 //listing route
 app.get("/listings",wrapAsync(listingController.index));
@@ -163,6 +163,8 @@ const validateReview=(req,res,next)=>{
 };
 app.post("/listings/:id/reviews",isLoggedIn,validateReview,wrapAsync(reviewController.createReview))
 app.delete("/listings/:id/reviews/:reviewId",isLoggedIn,isReviewAuthor,wrapAsync(reviewController.deleteReview))
+
+app.use("/",userRouter)
 
 //error handling
 
