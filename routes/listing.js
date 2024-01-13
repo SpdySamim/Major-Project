@@ -7,7 +7,7 @@ const listingController=require("../controllers/listings.js");
 
 
 const multer=require("multer");
-const {storage}=require("../cloudConfig.js");
+const {storage}=require("../cloudconfig");
 const upload=multer({storage});
 
 //----------index & create route-------------------------------
