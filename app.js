@@ -1,12 +1,12 @@
 //env for cloudinary
 if(process.env.NODE_ENV !="production"){  
-    require('dotenv').config()
+    require('dotenv').config();
 }
 //express setup
 const express=require("express");
 const app=express();
 const port=7070;
-const path=require("path")
+const path=require("path");
 //routes
 const listings = require("./routes/listing.js")
 const reviews = require("./routes/review.js")
@@ -107,13 +107,15 @@ app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser=req.user;
+    
     next();
 });
 
 // app.use("/",userRouter)
+app.use("/",userRouter);
+
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
-app.use("/",userRouter);
 
 //listing route
 // app.get("/listings",wrapAsync(listingController.index));
@@ -153,7 +155,7 @@ app.use("/",userRouter);
 //delete route
 // app.delete("/listings/:id/delete",isLoggedIn,isOwner,wrapAsync(listingController.deleteListing));
 //search
-// app.get("/search",wrapAsync(listingController.searchResult));
+app.get("/search",wrapAsync(listingController.searchResult));
 
 
 // problem....
