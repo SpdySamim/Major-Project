@@ -2,7 +2,7 @@
 if(process.env.NODE_ENV !="production"){  
     require('dotenv').config();
 }
-console.log(process.env.SECRET)
+console.log(process.env.S)
 console.log(process.env.ATLASDB_URL)
 //express setup
 const express=require("express");
@@ -71,7 +71,7 @@ const dbUrl=process.env.ATLASDB_URL;
 const store=MongoStore.create({
     mongoUrl:dbUrl,
     crypto:{
-        secret:process.env.SECRET,
+        secret:process.env.S,
     },
     touchAfter:24*3600,
 });
@@ -80,7 +80,7 @@ store.on("error",()=>{
 })
 const sessionOptions={
     store,
-    secret:process.env.SECRET,
+    secret:process.env.S,
     resave:false,
     saveUninitialized:true,
     cookie:{
