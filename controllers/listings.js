@@ -33,32 +33,19 @@ module.exports.showListing=async(req,res)=>{
 }
 //create new route
 module.exports.createListing=async(req,res,next)=>{
-    // console.log(req.body.listings);
-    // let result=listingSchema.validate(req.body);
-    // console.log(result);
-    // if(!req.body.listings){
-    //     throw new ExpressError(400,"Send the valid data for listing!");
-    // }
-    // if(result.error){
-    //     throw new ExpressError(400,result.error);
-    // }
-
 //mapbox code
     let response=await geocodingClient.forwardGeocode({
         query: req.body.listings.location,
         limit: 2,
     })
     .send();
-
     let url=req.file.path;
     let filename=req.file.filename;
     const newListing=new Listing(req.body.listings);
     newListing.owner=req.user._id;
     newListing.image={url,filename};
     newListing.geometry=response.body.features[0].geometry;
-
     let savedListings=await newListing.save();
-    // console.log(savedListings);
     req.flash("success","Listing added successfully!")
     res.redirect("/listings");
 }
@@ -77,12 +64,8 @@ module.exports.renderEditForm=async (req,res)=>{
 }
 //update route
 module.exports.updateListing=async (req,res)=>{
-    // if(!req.body.listings){
-    //     throw new ExpressError(400,"Send the valid data for listing!");
-    // }
     let{id}=req.params;
     let listing=await Listing.findByIdAndUpdate(id,{...req.body.listings});
-
     if(typeof req.file !=="undefined"){
     let url=req.file.path;
     let filename=req.file.filename;
